@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>iPhone風ホーム画面</title>
+
+<style>
+  body {
+    margin: 0;
+    background: radial-gradient(circle at 20% 20%, #ff8fa3, #ff6f91, #ff9671, #ffc75f, #f9f871);
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  #screen {
+    padding: 40px 20px 80px;
+    transition: filter 0.3s ease, font-size 0.3s ease;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 22px;
+  }
+
+  .icon {
+    text-align: center;
+  }
+
+  .icon img {
+    width: 72px;
+    height: 72px;
+    border-radius: 22px;
+    background: #fff;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  }
+
+  .navbar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 18px;
+    font-weight: 600;
+    padding: 12px 0;
+  }
+
+  .navbar span {
+    color: #007aff;
+  }
+
+  .app-screen {
+    display: none;
+    padding: 20px;
+  }
+
+  .settings-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 12px;
+    margin-bottom: 20px;
+  }
+
+  .settings-item {
+    padding: 14px 4px;
+    font-size: 17px;
+    border-bottom: 1px solid #e5e5ea;
+  }
+
+  .settings-item:last-child {
+    border-bottom: none;
+  }
+
+  .webview {
+    width: 100%;
+    height: 70vh;
+    border: none;
+    border-radius: 12px;
+    margin-top: 20px;
+  }
+
+  .slider {
+    width: 100%;
+    margin-top: 12px;
+  }
+</style>
+</head>
+
+<body>
+<div id="screen">
+
+<!-- ホーム画面 -->
+<div id="home">
+  <div class="grid">
+
+    <div class="icon" onclick="showApp('google')">
+      <img src="google_icon.PNG">
+      <p>Google</p>
+    </div>
+
+    <div class="icon" onclick="showApp('youtube')">
+      <img src="youtube_icon.JPG">
+      <p>YouTube</p>
+    </div>
+
+    <div class="icon" onclick="showApp('settings')">
+      <img src="settings_icon.JPG">
+      <p>設定</p>
+    </div>
+
+    <!-- 🎮 RPGアイコン -->
+    <div class="icon" onclick="showApp('rpg')">
+      <img src="rpg_icon.png">
+      <p>RPG</p>
+    </div>
+
+  </div>
+</div>
+
+<!-- Google -->
+<div id="google" class="app-screen">
+  <div class="navbar"><span onclick="goHome()">＜ ホーム</span>Google</div>
+
+  <input id="googleInput" type="text" placeholder="検索する"
+    style="width:100%;padding:12px;border-radius:10px;border:1px solid #ccc;">
+
+  <button onclick="googleSearch()" 
+    style="margin-top:12px;padding:12px 20px;border-radius:10px;background:#007aff;color:white;">
+    プライベート検索
+  </button>
+
+  <iframe id="googleFrame" class="webview"></iframe>
+</div>
+
+<!-- YouTube -->
+<div id="youtube" class="app-screen">
+  <div class="navbar"><span onclick="goHome()">＜ ホーム</span>YouTube</div>
+
+  <input id="youtubeInput" type="text" placeholder="動画を検索"
+    style="width:100%;padding:12px;border-radius:10px;border:1px solid #ccc;">
+
+  <button onclick="youtubeSearch()" 
+    style="margin-top:12px;padding:12px 20px;border-radius:10px;background:#ff0000;color:white;">
+    動画検索
+  </button>
+
+  <iframe id="youtubeFrame" class="webview"></iframe>
+</div>
+
+<!-- 🎮 RPGページ -->
+<div id="rpg" class="app-screen">
+  <div class="navbar"><span onclick="goHome()">＜ ホーム</span>RPG</div>
+  <iframe src="https://kazyukanata.github.io/1VS1gamesRPG/" class="webview"></iframe>
+</div>
+
+<!-- 設定 -->
+<div id="settings" class="app-screen">
+  <div class="navbar"><span onclick="goHome()">＜ ホーム</span>設定</div>
+
+  <div class="settings-card">
+    <div class="settings-item" onclick="showApp('wallpaper')">壁紙</div>
+    <div class="settings-item" onclick="showApp('accessibility')">アクセシビリティ</div>
+  </div>
+</div>
+
+<!-- 壁紙 -->
+<div id="wallpaper" class="app-screen">
+  <div class="navbar"><span onclick="showApp('settings')">＜ 設定</span>壁紙</div>
+
+  <div class="settings-card">
+    <div class="settings-item" onclick="setWallpaper('abstract')">抽象アート</div>
+    <div class="settings-item" onclick="setWallpaper('gradient')">グラデーション</div>
+    <div class="settings-item" onclick="setWallpaper('space')">星空・宇宙</div>
+    <div class="settings-item" onclick="setWallpaper('nature')">自然・風景</div>
+  </div>
+</div>
+
+<!-- アクセシビリティ -->
+<div id="accessibility" class="app-screen">
+  <div class="navbar"><span onclick="showApp('settings')">＜ 設定</span>アクセシビリティ</div>
+
+  <div class="settings-card">
+    <div class="settings-item">文字サイズ</div>
+    <input type="range" min="14" max="30" value="18" class="slider" oninput="changeFontSize(this.value)">
+  </div>
+
+  <div class="settings-card">
+    <div class="settings-item">画面の明るさ</div>
+    <input type="range" min="0.4" max="1" step="0.05" value="1" class="slider" oninput="changeBrightness(this.value)">
+  </div>
+
+  <div class="settings-card">
+    <div class="settings-item">見やすさ調整</div>
+    <input type="range" min="0" max="100" value="0" class="slider" oninput="presbyopiaAdjust(this.value)">
+  </div>
+
+  <div class="settings-card">
+    <div class="settings-item">音声読み上げ</div>
+    <button onclick="speakText()" 
+      style="margin-top:12px;padding:12px 20px;border-radius:10px;background:#007aff;color:white;">
+      読み上げる
+    </button>
+  </div>
+
+  <div class="settings-card">
+    <div class="settings-item">色覚調整（色弱モード）</div>
+    <button onclick="toggleColorBlind()" 
+      style="margin-top:12px;padding:12px 20px;border-radius:10px;background:#007aff;color:white;">
+      ON / OFF
+    </button>
+  </div>
+</div>
+
+</div><!-- /screen -->
+
+<script>
+  let brightnessLevel = 1;
+  let colorBlindMode = false;
+  let visibilityLevel = 0;
+
+  function applyFilters() {
+    const t = visibilityLevel / 100;
+    const power = t * t;
+    const contrast = 1 + power * 0.40;
+    const saturate = 1 + power * 0.25;
+    const brightness = brightnessLevel * (1 - power * 0.15);
+    const colorBlindFilter = colorBlindMode ? "contrast(1.2) saturate(0.6)" : "";
+    document.getElementById("screen").style.filter =
+      `${colorBlindFilter} contrast(${contrast}) saturate(${saturate}) brightness(${brightness})`;
+  }
+
+  function showApp(app) {
+    document.querySelectorAll(".app-screen").forEach(s => s.style.display = "none");
+    document.getElementById("home").style.display = "none";
+    document.getElementById(app).style.display = "block";
+  }
+
+  function goHome() {
+    document
