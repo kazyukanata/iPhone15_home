@@ -14,7 +14,7 @@
 
   #screen {
     padding: 40px 20px 80px;
-    transition: filter 0.3s ease, font-size 0.3s ease, transform 0.3s ease;
+    transition: filter 0.3s ease, font-size 0.3s ease;
   }
 
   .grid {
@@ -160,7 +160,7 @@
   <div class="navbar"><span onclick="showApp('settings')">＜ 設定</span>アクセシビリティ</div>
 
   <div class="settings-card">
-    <div class="settings-item">文字サイズ（老眼向け）</div>
+    <div class="settings-item">文字サイズ</div>
     <input type="range" min="14" max="30" value="18" class="slider" oninput="changeFontSize(this.value)">
   </div>
 
@@ -169,9 +169,9 @@
     <input type="range" min="0.4" max="1" step="0.05" value="1" class="slider" oninput="changeBrightness(this.value)">
   </div>
 
-  <!-- 老眼補正スライダー（老眼鏡忘れた人向け） -->
+  <!-- 見やすさ調整（老眼補正） -->
   <div class="settings-card">
-    <div class="settings-item">老眼補正（老眼鏡忘れた人向け）</div>
+    <div class="settings-item">見やすさ調整</div>
     <input type="range" min="0" max="100" value="0" class="slider" oninput="presbyopiaAdjust(this.value)">
   </div>
 
@@ -236,7 +236,7 @@
     }
   }
 
-  /* 老眼向け：文字サイズ */
+  /* 文字サイズ */
   function changeFontSize(size) {
     document.getElementById("screen").style.fontSize = size + "px";
   }
@@ -246,16 +246,15 @@
     document.getElementById("screen").style.filter = "brightness(" + level + ")";
   }
 
-  /* 老眼補正（老眼鏡忘れた人向け） */
+  /* 見やすさ調整（自然で強め） */
   function presbyopiaAdjust(level) {
     const t = level / 100;
+    const power = t * t;  // 自然に強くなるカーブ
 
-    const scale = 1 + t * 0.20;      // 最大1.20倍（焦点距離補正の代替）
-    const contrast = 1 + t * 0.30;   // 最大1.30（視認性UP）
-    const saturate = 1 + t * 0.20;   // 最大1.20（シャープネス代替）
-    const brightness = 1 - t * 0.10; // 最大10%暗く（眩しさ軽減）
+    const contrast = 1 + power * 0.40;
+    const saturate = 1 + power * 0.25;
+    const brightness = 1 - power * 0.15;
 
-    document.getElementById("screen").style.transform = `scale(${scale})`;
     document.getElementById("screen").style.filter =
       `contrast(${contrast}) saturate(${saturate}) brightness(${brightness})`;
   }
