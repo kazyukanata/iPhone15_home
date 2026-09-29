@@ -82,6 +82,23 @@
     width: 100%;
     margin-top: 12px;
   }
+
+  /* 🎮 魔王vs勇者だけスクロールなしの全画面表示 */
+  #rpg {
+    padding: 0;
+    margin: 0;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  #rpg .webview {
+    width: 100%;
+    height: calc(100vh - 60px); /* ナビバー分を引く */
+    border: none;
+    border-radius: 0;
+    margin: 0;
+    padding: 0;
+  }
 </style>
 </head>
 
@@ -107,11 +124,11 @@
       <p>設定</p>
     </div>
 
-    <!-- 🎮 RPGアイコン（拡張子 .PNG） -->
+    <!-- 🎮 魔王vs勇者アイコン -->
     <div class="icon" onclick="showApp('rpg')">
-  <img src="rpg_icon.PNG">
-  <p>魔王vs勇者</p>
-</div>
+      <img src="rpg_icon.PNG">
+      <p>魔王vs勇者</p>
+    </div>
 
   </div>
 </div>
@@ -146,9 +163,9 @@
   <iframe id="youtubeFrame" class="webview"></iframe>
 </div>
 
-<!-- 🎮 RPGページ -->
+<!-- 🎮 魔王vs勇者ページ（全画面表示） -->
 <div id="rpg" class="app-screen">
-  <div class="navbar"><span onclick="goHome()">＜ ホーム</span>RPG</div>
+  <div class="navbar"><span onclick="goHome()">＜ ホーム</span>魔王vs勇者</div>
   <iframe src="https://kazyukanata.github.io/1VS1gamesRPG/" class="webview"></iframe>
 </div>
 
