@@ -13,7 +13,7 @@
     font-family: -apple-system, BlinkMacSystemFont, sans-serif;
     padding: 40px 20px 80px;
     color: #000;
-    transition: background 0.6s ease;
+    transition: background 0.6s ease, filter 0.3s ease;
   }
 
   .grid {
@@ -37,16 +37,6 @@
     transition: transform 0.18s ease;
   }
 
-  .icon img:active {
-    transform: scale(1.18);
-  }
-
-  .icon p {
-    margin-top: 6px;
-    font-size: 12px;
-  }
-
-  /* iOS設定風ナビバー */
   .navbar {
     display: flex;
     align-items: center;
@@ -61,7 +51,11 @@
     font-size: 17px;
   }
 
-  /* iOS設定風カード */
+  .app-screen {
+    display: none;
+    padding: 20px;
+  }
+
   .settings-card {
     background: #fff;
     border-radius: 12px;
@@ -79,20 +73,17 @@
     border-bottom: none;
   }
 
-  .home-indicator {
-    position: fixed;
-    bottom: 12px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 120px;
-    height: 5px;
-    background: rgba(255,255,255,0.5);
-    border-radius: 3px;
+  iframe {
+    width: 100%;
+    height: 70vh;
+    border: none;
+    border-radius: 12px;
+    margin-top: 20px;
   }
 
-  .app-screen {
-    display: none;
-    padding: 20px;
+  .slider {
+    width: 100%;
+    margin-top: 12px;
   }
 </style>
 </head>
@@ -103,105 +94,3 @@
 <div id="home">
   <div class="grid">
     <div class="icon" onclick="showApp('google')">
-      <img src="google_icon.PNG" alt="Google">
-      <p>Google</p>
-    </div>
-
-    <div class="icon" onclick="showApp('safari')">
-      <img src="safari_icon.PNG" alt="Safari">
-      <p>Safari</p>
-    </div>
-
-    <div class="icon" onclick="showApp('youtube')">
-      <img src="youtube_icon.JPG" alt="YouTube">
-      <p>YouTube</p>
-    </div>
-
-    <div class="icon" onclick="showApp('settings')">
-      <img src="settings_icon.JPG" alt="設定">
-      <p>設定</p>
-    </div>
-  </div>
-</div>
-
-<!-- Google画面 -->
-<div id="google" class="app-screen">
-  <div class="navbar"><span onclick="goHome()">＜ ホーム</span>Google</div>
-  <input type="text" placeholder="検索する" style="width:100%;padding:12px;border-radius:10px;border:1px solid #ccc;">
-</div>
-
-<!-- Safari画面 -->
-<div id="safari" class="app-screen">
-  <div class="navbar"><span onclick="goHome()">＜ ホーム</span>Safari</div>
-  <input type="text" placeholder="検索またはWebサイト名を入力" style="width:100%;padding:12px;border-radius:10px;border:1px solid #ccc;">
-</div>
-
-<!-- YouTube画面 -->
-<div id="youtube" class="app-screen">
-  <div class="navbar"><span onclick="goHome()">＜ ホーム</span>YouTube</div>
-  <div style="background:#000;width:100%;height:200px;border-radius:12px;"></div>
-  <p>動画風の黒い枠です。</p>
-</div>
-
-<!-- 設定画面（iOS設定風） -->
-<div id="settings" class="app-screen">
-  <div class="navbar"><span onclick="goHome()">＜ ホーム</span>設定</div>
-
-  <div class="settings-card">
-    <div class="settings-item" onclick="showWallpaperMenu()">壁紙</div>
-  </div>
-</div>
-
-<!-- 壁紙選択画面（iOS設定風） -->
-<div id="wallpaper" class="app-screen">
-  <div class="navbar"><span onclick="showApp('settings')">＜ 設定</span>壁紙</div>
-
-  <div class="settings-card">
-    <div class="settings-item" onclick="setWallpaper('abstract')">抽象アート</div>
-    <div class="settings-item" onclick="setWallpaper('gradient')">グラデーション</div>
-    <div class="settings-item" onclick="setWallpaper('space')">星空・宇宙</div>
-    <div class="settings-item" onclick="setWallpaper('nature')">自然・風景</div>
-  </div>
-</div>
-
-<div class="home-indicator"></div>
-
-<script>
-  function showApp(app) {
-    document.querySelectorAll(".app-screen").forEach(s => s.style.display = "none");
-    document.getElementById("home").style.display = "none";
-    document.getElementById(app).style.display = "block";
-  }
-
-  function goHome() {
-    document.querySelectorAll(".app-screen").forEach(s => s.style.display = "none");
-    document.getElementById("home").style.display = "block";
-  }
-
-  function showWallpaperMenu() {
-    showApp("wallpaper");
-  }
-
-  /* 壁紙変更機能 */
-  function setWallpaper(type) {
-    if (type === "abstract") {
-      document.body.style.background =
-        "radial-gradient(circle at 20% 20%, #ff8fa3, #ff6f91, #ff9671, #ffc75f, #f9f871)";
-    }
-    if (type === "gradient") {
-      document.body.style.background =
-        "radial-gradient(circle at top left, #ff9a9e, #fad0c4, #fbc2eb, #a6c1ee)";
-    }
-    if (type === "space") {
-      document.body.style.background =
-        "radial-gradient(circle at center, #0f0c29, #302b63, #24243e)";
-    }
-    if (type === "nature") {
-      document.body.style.background =
-        "radial-gradient(circle at center, #a8e6cf, #dcedc1, #ffd3b6, #ffaaa5)";
-    }
-  }
-</script>
-
-</body>
-</html>
