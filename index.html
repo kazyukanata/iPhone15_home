@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>iPhone15 ホーム画面風</title>
+<title>iPhone風ホーム画面</title>
 
 <style>
   body {
     margin: 0;
-    background: linear-gradient(#1c1c1e, #000);
+    background: #ffffff; /* 背景を真っ白に */
     font-family: -apple-system, BlinkMacSystemFont, sans-serif;
     padding: 40px 20px 80px;
-    color: white;
+    color: #000;
   }
 
   .grid {
@@ -24,10 +24,15 @@
     text-align: center;
   }
 
+  /* アイコンの余白とサイズを統一 */
   .icon img {
-    width: 68px;
-    height: 68px;
-    border-radius: 22px;
+    width: 72px;       /* YouTubeアイコンに合わせて統一 */
+    height: 72px;
+    object-fit: cover; /* 余白の違いを吸収して均一化 */
+    border-radius: 18px;
+    background: #fff;  /* アイコン周りの白を統一 */
+    padding: 4px;      /* 白い余白を均一にする */
+    box-sizing: border-box;
     transition: transform 0.18s ease;
   }
 
@@ -47,7 +52,7 @@
     transform: translateX(-50%);
     width: 120px;
     height: 5px;
-    background: #fff;
+    background: #ccc;
     border-radius: 3px;
     opacity: 0.35;
   }
