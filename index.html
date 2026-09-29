@@ -97,11 +97,11 @@
       <p>Google</p>
     </div>
 
-    <!-- YouTube（nocookieでプライベート再生） -->
-    <div class="icon" onclick="showApp('youtube')">
-      <img src="youtube_icon.JPG">
-      <p>YouTube</p>
-    </div>
+<!-- YouTube（nocookieでプライベート再生） -->
+<div id="youtube" class="app-screen">
+  <div class="navbar"><span onclick="goHome()">＜ ホーム</span>YouTube</div>
+  <iframe src="https://www.youtube-nocookie.com/results?search_query=" allow="fullscreen"></iframe>
+</div>
 
     <!-- 設定 -->
     <div class="icon" onclick="showApp('settings')">
