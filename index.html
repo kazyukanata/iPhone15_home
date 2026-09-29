@@ -14,7 +14,7 @@
 
   #screen {
     padding: 40px 20px 80px;
-    transition: filter 0.3s ease, font-size 0.3s ease;
+    transition: filter 0.3s ease, font-size 0.3s ease, transform 0.3s ease;
   }
 
   .grid {
@@ -97,11 +97,11 @@
       <p>Google</p>
     </div>
 
-<!-- YouTube（nocookieでプライベート再生） -->
-<div id="youtube" class="app-screen">
-  <div class="navbar"><span onclick="goHome()">＜ ホーム</span>YouTube</div>
-  <iframe src="https://www.youtube-nocookie.com/results?search_query=" allow="fullscreen"></iframe>
-</div>
+    <!-- YouTube（nocookieでプライベート再生） -->
+    <div class="icon" onclick="showApp('youtube')">
+      <img src="youtube_icon.JPG">
+      <p>YouTube</p>
+    </div>
 
     <!-- 設定 -->
     <div class="icon" onclick="showApp('settings')">
@@ -130,7 +130,7 @@
 <!-- YouTube（nocookieでプライベート再生） -->
 <div id="youtube" class="app-screen">
   <div class="navbar"><span onclick="goHome()">＜ ホーム</span>YouTube</div>
-  <iframe src="https://www.youtube-nocookie.com" allow="fullscreen"></iframe>
+  <iframe src="https://www.youtube-nocookie.com/results?search_query=" allow="fullscreen"></iframe>
 </div>
 
 <!-- 設定 -->
@@ -167,6 +167,12 @@
   <div class="settings-card">
     <div class="settings-item">画面の明るさ</div>
     <input type="range" min="0.4" max="1" step="0.05" value="1" class="slider" oninput="changeBrightness(this.value)">
+  </div>
+
+  <!-- 老眼補正スライダー（老眼鏡忘れた人向け） -->
+  <div class="settings-card">
+    <div class="settings-item">老眼補正（老眼鏡忘れた人向け）</div>
+    <input type="range" min="0" max="100" value="0" class="slider" oninput="presbyopiaAdjust(this.value)">
   </div>
 
   <div class="settings-card">
@@ -238,6 +244,20 @@
   /* 明るさ調整 */
   function changeBrightness(level) {
     document.getElementById("screen").style.filter = "brightness(" + level + ")";
+  }
+
+  /* 老眼補正（老眼鏡忘れた人向け） */
+  function presbyopiaAdjust(level) {
+    const t = level / 100;
+
+    const scale = 1 + t * 0.20;      // 最大1.20倍（焦点距離補正の代替）
+    const contrast = 1 + t * 0.30;   // 最大1.30（視認性UP）
+    const saturate = 1 + t * 0.20;   // 最大1.20（シャープネス代替）
+    const brightness = 1 - t * 0.10; // 最大10%暗く（眩しさ軽減）
+
+    document.getElementById("screen").style.transform = `scale(${scale})`;
+    document.getElementById("screen").style.filter =
+      `contrast(${contrast}) saturate(${saturate}) brightness(${brightness})`;
   }
 
   /* 音声読み上げ */
