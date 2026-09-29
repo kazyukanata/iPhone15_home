@@ -107,9 +107,9 @@
       <p>設定</p>
     </div>
 
-    <!-- 🎮 RPGアイコン -->
+    <!-- 🎮 RPGアイコン（拡張子 .PNG に修正済み） -->
     <div class="icon" onclick="showApp('rpg')">
-      <img src="rpg_icon.png">
+      <img src="rpg_icon.PNG">
       <p>RPG</p>
     </div>
 
@@ -235,4 +235,72 @@
   }
 
   function goHome() {
-    document
+    document.querySelectorAll(".app-screen").forEach(s => s.style.display = "none");
+    document.getElementById("home").style.display = "block";
+  }
+
+  function googleSearch() {
+    const q = document.getElementById("googleInput").value;
+    const url =
+      "https://www.google.com/search?q=" +
+      encodeURIComponent(q) +
+      "&hl=ja&pws=0&gl=JP&gws_rd=cr";
+    document.getElementById("googleFrame").src = url;
+  }
+
+  function youtubeSearch() {
+    const q = document.getElementById("youtubeInput").value;
+    const url =
+      "https://www.youtube.com/results?search_query=" +
+      encodeURIComponent(q);
+    document.getElementById("youtubeFrame").src = url;
+  }
+
+  function setWallpaper(type) {
+    if (type === "abstract") {
+      document.body.style.background =
+        "radial-gradient(circle at 20% 20%, #ff8fa3, #ff6f91, #ff9671, #ffc75f, #f9f871)";
+    }
+    if (type === "gradient") {
+      document.body.style.background =
+        "radial-gradient(circle at top left, #ff9a9e, #fad0c4, #fbc2eb, #a6c1ee)";
+    }
+    if (type === "space") {
+      document.body.style.background =
+        "radial-gradient(circle at center, #0f0c29, #302b63, #24243e)";
+    }
+    if (type === "nature") {
+      document.body.style.background =
+        "radial-gradient(circle at center, #a8e6cf, #dcedc1, #ffd3b6, #ffaaa5)";
+    }
+  }
+
+  function changeFontSize(size) {
+    document.getElementById("screen").style.fontSize = size + "px";
+  }
+
+  function changeBrightness(level) {
+    brightnessLevel = level;
+    applyFilters();
+  }
+
+  function presbyopiaAdjust(level) {
+    visibilityLevel = level;
+    applyFilters();
+  }
+
+  function speakText() {
+    const text = "画面の内容を読み上げます。設定から調整できます。";
+    const speech = new SpeechSynthesisUtterance(text);
+    speech.lang = "ja-JP";
+    window.speechSynthesis.speak(speech);
+  }
+
+  function toggleColorBlind() {
+    colorBlindMode = !colorBlindMode;
+    applyFilters();
+  }
+</script>
+
+</body>
+</html>
