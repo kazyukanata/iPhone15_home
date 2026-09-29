@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>設定</title>
+
+<style>
+  body {
+    font-family: -apple-system;
+    padding: 20px;
+    background: #f2f2f7;
+  }
+
+  .card {
+    background: #fff;
+    padding: 20px;
+    border-radius: 14px;
+    margin-bottom: 20px;
+  }
+
+  .label {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+
+  input[type=range] {
+    width: 100%;
+  }
+
+  #preview {
+    margin-top: 20px;
+    padding: 20px;
+    background: #fff;
+    border-radius: 14px;
+    font-size: 18px;
+  }
+
+  #timerAlert {
+    display: none;
+    position: fixed;
+    top: 30%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #000;
+    color: #fff;
+    padding: 30px;
+    border-radius: 20px;
+    font-size: 24px;
+    text-align: center;
+  }
+</style>
+</head>
+
+<body>
+
+<h2>設定</h2>
+
+<!-- 文字サイズ -->
+<div class="card">
+  <div class="label">文字サイズ（老眼向け）</div>
+  <input type="range" min="16" max="40" value="18" oninput="changeFont(this.value)">
+</div>
+
+<!-- コントラスト -->
+<div class="card">
+  <div class="label">コントラスト</div>
+  <input type="range" min="0" max="1" step="0.1" value="0" oninput="changeContrast(this.value)">
+</div>
+
+<!-- 明るさ -->
+<div class="card">
+  <div class="label">画面の明るさ</div>
+  <input type="range" min="0.3" max="1" step="0.1" value="1" oninput="changeBrightness(this.value)">
+</div>
+
+<!-- 色覚調整 -->
+<div class="card">
+  <div class="label">色覚に合わせた色合い調整</div>
+  <select onchange="changeColorMode(this.value)">
+    <option value="none">標準</option>
+    <option value="protan">赤系強調（プロタン）</option>
+    <option value="deutan">緑系強調（デュータン）</option>
+    <option value="tritan">青系強調（トリタン）</option>
+    <option value="gray">グレースケール</option>
+    <option value="sepia">セピア</option>
+  </select>
+</div>
+
+<!-- 音声読み上げ -->
+<div class="card">
+  <div class="label">音声読み上げ</div>
+  <button onclick="speakText()">読み上げる</button>
+</div>
+
+<!-- お休みタイマー -->
+<div class="card">
+  <div class="label">お休みタイマー（分）</div>
+  <input type="number" id="timerMin" min="1" value="5">
+  <button onclick="startTimer()">タイマー開始</button>
+</div>
+
+<!-- プレビュー -->
+<div id="preview">
+  調整結果のプレビューがここに表示されます。
+</div>
+
+<div id="timerAlert">時間になりました</div>
+
+<script>
+  function changeFont(size) {
+    document.getElementById('preview').style.fontSize = size + "px";
+  }
+
+  function changeContrast(level) {
+    document.getElementById('preview').style.filter =
+      "contrast(" + (1 + Number(level)) + ")";
+  }
+
+  function changeBrightness(level) {
+    document.body.style.filter = "brightness(" + level + ")";
+  }
+
+  function changeColorMode(mode) {
+    const body = document.body;
+    body.style.filter = "none";
+
+    if (mode === "protan") body.style.filter = "contrast(1.2) saturate(1.3)";
+    if (mode === "deutan") body.style.filter = "contrast(1.2) hue-rotate(20deg)";
+    if (mode === "tritan") body.style.filter = "contrast(1.2) hue-rotate(200deg)";
+    if (mode === "gray") body.style.filter = "grayscale(1)";
+    if (mode === "sepia") body.style.filter = "sepia(1)";
+  }
+
+  function speakText() {
+    const text = document.getElementById('preview').innerText;
+    const speech = new SpeechSynthesisUtterance(text);
+    speech.lang = "ja-JP";
+    window.speechSynthesis.speak(speech);
+  }
+
+  function startTimer() {
+    const min = Number(document.getElementById('timerMin').value);
+    setTimeout(() => {
+      const alertBox = document.getElementById('timerAlert');
+      alertBox.style.display = "block";
+
+      const speech = new SpeechSynthesisUtterance("時間になりました");
+      speech.lang = "ja-JP";
+      window.speechSynthesis.speak(speech);
+
+      setTimeout(() => alertBox.style.display = "none", 5000);
+    }, min * 60000);
+  }
+</script>
+
+</body>
+</html>
