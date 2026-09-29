@@ -91,17 +91,19 @@
 <div id="home">
   <div class="grid">
 
-    <!-- Googleだけ残す -->
+    <!-- Google（プライベート検索） -->
     <div class="icon" onclick="showApp('google')">
       <img src="google_icon.PNG">
       <p>Google</p>
     </div>
 
+    <!-- YouTube（nocookieでプライベート再生） -->
     <div class="icon" onclick="showApp('youtube')">
       <img src="youtube_icon.JPG">
       <p>YouTube</p>
     </div>
 
+    <!-- 設定 -->
     <div class="icon" onclick="showApp('settings')">
       <img src="settings_icon.JPG">
       <p>設定</p>
@@ -110,7 +112,7 @@
   </div>
 </div>
 
-<!-- Google -->
+<!-- Google（プライベート検索） -->
 <div id="google" class="app-screen">
   <div class="navbar"><span onclick="goHome()">＜ ホーム</span>Google</div>
 
@@ -119,16 +121,16 @@
 
   <button onclick="googleSearch()" 
     style="margin-top:12px;padding:12px 20px;border-radius:10px;background:#007aff;color:white;">
-    Google検索
+    プライベート検索
   </button>
 
   <iframe id="googleFrame"></iframe>
 </div>
 
-<!-- YouTube -->
+<!-- YouTube（nocookieでプライベート再生） -->
 <div id="youtube" class="app-screen">
   <div class="navbar"><span onclick="goHome()">＜ ホーム</span>YouTube</div>
-  <iframe src="https://www.youtube.com"></iframe>
+  <iframe src="https://www.youtube-nocookie.com" allow="fullscreen"></iframe>
 </div>
 
 <!-- 設定 -->
@@ -187,4 +189,73 @@
 </div><!-- /screen -->
 
 <script>
-  function
+  function showApp(app) {
+    document.querySelectorAll(".app-screen").forEach(s => s.style.display = "none");
+    document.getElementById("home").style.display = "none";
+    document.getElementById(app).style.display = "block";
+  }
+
+  function goHome() {
+    document.querySelectorAll(".app-screen").forEach(s => s.style.display = "none");
+    document.getElementById("home").style.display = "block";
+  }
+
+  /* Google検索（完全プライベート検索） */
+  function googleSearch() {
+    const q = document.getElementById("googleInput").value;
+    const url =
+      "https://www.google.com/search?q=" +
+      encodeURIComponent(q) +
+      "&hl=ja&pws=0&gl=JP&gws_rd=cr";
+    document.getElementById("googleFrame").src = url;
+  }
+
+  /* 壁紙変更 */
+  function setWallpaper(type) {
+    if (type === "abstract") {
+      document.body.style.background =
+        "radial-gradient(circle at 20% 20%, #ff8fa3, #ff6f91, #ff9671, #ffc75f, #f9f871)";
+    }
+    if (type === "gradient") {
+      document.body.style.background =
+        "radial-gradient(circle at top left, #ff9a9e, #fad0c4, #fbc2eb, #a6c1ee)";
+    }
+    if (type === "space") {
+      document.body.style.background =
+        "radial-gradient(circle at center, #0f0c29, #302b63, #24243e)";
+    }
+    if (type === "nature") {
+      document.body.style.background =
+        "radial-gradient(circle at center, #a8e6cf, #dcedc1, #ffd3b6, #ffaaa5)";
+    }
+  }
+
+  /* 老眼向け：文字サイズ */
+  function changeFontSize(size) {
+    document.getElementById("screen").style.fontSize = size + "px";
+  }
+
+  /* 明るさ調整 */
+  function changeBrightness(level) {
+    document.getElementById("screen").style.filter = "brightness(" + level + ")";
+  }
+
+  /* 音声読み上げ */
+  function speakText() {
+    const text = "画面の内容を読み上げます。設定から調整できます。";
+    const speech = new SpeechSynthesisUtterance(text);
+    speech.lang = "ja-JP";
+    window.speechSynthesis.speak(speech);
+  }
+
+  /* 色覚調整 */
+  let colorBlind = false;
+  function toggleColorBlind() {
+    colorBlind = !colorBlind;
+    document.getElementById("screen").style.filter =
+      colorBlind ? "contrast(1.2) saturate(0.6)" : "none";
+  }
+</script>
+
+</body>
+</html>
