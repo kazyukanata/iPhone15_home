@@ -11,9 +11,14 @@
     background: radial-gradient(circle at 20% 20%, #ff8fa3, #ff6f91, #ff9671, #ffc75f, #f9f871);
     background-attachment: fixed;
     font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-    padding: 40px 20px 80px;
     color: #000;
-    transition: background 0.6s ease, filter 0.3s ease;
+    transition: background 0.6s ease;
+  }
+
+  /* 画面全体のラッパー（filterはここに適用する） */
+  #screen {
+    padding: 40px 20px 80px;
+    transition: filter 0.3s ease, font-size 0.3s ease;
   }
 
   .grid {
@@ -90,7 +95,176 @@
 
 <body>
 
+<div id="screen">
+
 <!-- ホーム画面 -->
 <div id="home">
   <div class="grid">
     <div class="icon" onclick="showApp('google')">
+      <img src="google_icon.PNG" alt="Google">
+      <p>Google</p>
+    </div>
+
+    <div class="icon" onclick="openSafari()">
+      <img src="safari_icon.PNG" alt="Safari">
+      <p>Safari</p>
+    </div>
+
+    <div class="icon" onclick="showApp('youtube')">
+      <img src="youtube_icon.JPG" alt="YouTube">
+      <p>YouTube</p>
+    </div>
+
+    <div class="icon" onclick="showApp('settings')">
+      <img src="settings_icon.JPG" alt="設定">
+      <p>設定</p>
+    </div>
+  </div>
+</div>
+
+<!-- Google -->
+<div id="google" class="app-screen">
+  <div class="navbar"><span onclick="goHome()">＜ ホーム</span>Google</div>
+  <input id="googleInput" type="text" placeholder="検索する"
+    style="width:100%;padding:12px;border-radius:10px;border:1px solid #ccc;">
+  <button onclick="googleSearch()" 
+    style="margin-top:12px;padding:12px 20px;border-radius:10px;border:none;background:#007aff;color:white;font-size:16px;">
+    Google検索
+  </button>
+  <iframe id="googleFrame"></iframe>
+</div>
+
+<!-- YouTube -->
+<div id="youtube" class="app-screen">
+  <div class="navbar"><span onclick="goHome()">＜ ホーム</span>YouTube</div>
+  <iframe src="https://www.youtube.com"></iframe>
+</div>
+
+<!-- 設定 -->
+<div id="settings" class="app-screen">
+  <div class="navbar"><span onclick="goHome()">＜ ホーム</span>設定</div>
+
+  <div class="settings-card">
+    <div class="settings-item" onclick="showApp('wallpaper')">壁紙</div>
+    <div class="settings-item" onclick="showApp('accessibility')">アクセシビリティ</div>
+  </div>
+</div>
+
+<!-- 壁紙 -->
+<div id="wallpaper" class="app-screen">
+  <div class="navbar"><span onclick="showApp('settings')">＜ 設定</span>壁紙</div>
+
+  <div class="settings-card">
+    <div class="settings-item" onclick="setWallpaper('abstract')">抽象アート</div>
+    <div class="settings-item" onclick="setWallpaper('gradient')">グラデーション</div>
+    <div class="settings-item" onclick="setWallpaper('space')">星空・宇宙</div>
+    <div class="settings-item" onclick="setWallpaper('nature')">自然・風景</div>
+  </div>
+</div>
+
+<!-- アクセシビリティ -->
+<div id="accessibility" class="app-screen">
+  <div class="navbar"><span onclick="showApp('settings')">＜ 設定</span>アクセシビリティ</div>
+
+  <div class="settings-card">
+    <div class="settings-item">文字サイズ（老眼向け）</div>
+    <input type="range" min="14" max="30" value="18" class="slider" oninput="changeFontSize(this.value)">
+  </div>
+
+  <div class="settings-card">
+    <div class="settings-item">画面の明るさ</div>
+    <input type="range" min="0.4" max="1" step="0.05" value="1" class="slider" oninput="changeBrightness(this.value)">
+  </div>
+
+  <div class="settings-card">
+    <div class="settings-item">音声読み上げ</div>
+    <button onclick="speakText()" 
+      style="margin-top:12px;padding:12px 20px;border-radius:10px;border:none;background:#007aff;color:white;font-size:16px;">
+      読み上げる
+    </button>
+  </div>
+
+  <div class="settings-card">
+    <div class="settings-item">色覚調整（色弱モード）</div>
+    <button onclick="toggleColorBlind()" 
+      style="margin-top:12px;padding:12px 20px;border-radius:10px;border:none;background:#007aff;color:white;font-size:16px;">
+      ON / OFF
+    </button>
+  </div>
+</div>
+
+</div><!-- /screen -->
+
+<script>
+  function showApp(app) {
+    document.querySelectorAll(".app-screen").forEach(s => s.style.display = "none");
+    document.getElementById("home").style.display = "none";
+    document.getElementById(app).style.display = "block";
+  }
+
+  function goHome() {
+    document.querySelectorAll(".app-screen").forEach(s => s.style.display = "none");
+    document.getElementById("home").style.display = "block";
+  }
+
+  /* Safari起動 */
+  function openSafari() {
+    window.location.href = "https://www.apple.com";
+  }
+
+  /* Google検索 */
+  function googleSearch() {
+    const q = document.getElementById("googleInput").value;
+    const url = "https://www.google.com/search?q=" + encodeURIComponent(q);
+    document.getElementById("googleFrame").src = url;
+  }
+
+  /* 壁紙変更 */
+  function setWallpaper(type) {
+    if (type === "abstract") {
+      document.body.style.background =
+        "radial-gradient(circle at 20% 20%, #ff8fa3, #ff6f91, #ff9671, #ffc75f, #f9f871)";
+    }
+    if (type === "gradient") {
+      document.body.style.background =
+        "radial-gradient(circle at top left, #ff9a9e, #fad0c4, #fbc2eb, #a6c1ee)";
+    }
+    if (type === "space") {
+      document.body.style.background =
+        "radial-gradient(circle at center, #0f0c29, #302b63, #24243e)";
+    }
+    if (type === "nature") {
+      document.body.style.background =
+        "radial-gradient(circle at center, #a8e6cf, #dcedc1, #ffd3b6, #ffaaa5)";
+    }
+  }
+
+  /* 老眼向け：文字サイズ */
+  function changeFontSize(size) {
+    document.getElementById("screen").style.fontSize = size + "px";
+  }
+
+  /* 明るさ調整 */
+  function changeBrightness(level) {
+    document.getElementById("screen").style.filter = "brightness(" + level + ")";
+  }
+
+  /* 音声読み上げ */
+  function speakText() {
+    const text = "画面の内容を読み上げます。設定から調整できます。";
+    const speech = new SpeechSynthesisUtterance(text);
+    speech.lang = "ja-JP";
+    window.speechSynthesis.speak(speech);
+  }
+
+  /* 色覚調整 */
+  let colorBlind = false;
+  function toggleColorBlind() {
+    colorBlind = !colorBlind;
+    document.getElementById("screen").style.filter =
+      colorBlind ? "contrast(1.2) saturate(0.6)" : "none";
+  }
+</script>
+
+</body>
+</html>
